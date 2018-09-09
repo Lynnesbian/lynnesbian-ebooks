@@ -23,7 +23,7 @@ toot = sentence.replace("\0", "\n")
 media = None
 media_description = None
 
-if random.randint(1, 2) == 2:
+if random.randint(1, 3) == 2:
 	#time for some nonstandard behaviour babey yesssss
 	choice = random.randint(1, 3)
 	if choice == 1:
@@ -57,12 +57,12 @@ if random.randint(1, 2) == 2:
 	elif choice == 3:
 		nota = ["goth", "gamer", "fan", "linux nerd", "programmer", "wrestler", "member of parliment",
 		"cool cat", "communist", "anarchist", "lesbian", "slimegirl", "good friend", "one",
-		"socialist", "australian"]
+		"socialist"]
 		unless = ["u sleep in a coffin", "you can 100% run ocarina of time in under 12 parsecs", "you compile ur own kernel", "you can speak latin",
 		"you are all married to each other", "you are so fucking gay", "you piledrive the announcers", "you can sing the whole pokerap from memory",
 		"you read theory in the bathtub", "you can name five of my albums", "you can fit inside this water bottle",
 		"you can play playstation with ur feet", "unless like girls", "you carry a molotov around with you",
-		"you beat me up pls uwu", "you are gay", "can kill a dingo with spare change"]
+		"you beat me up pls uwu", "you are gay"]
 		toot = "sorry, ur not a real {} unless {}".format(random.choice(nota),
 			random.choice(unless))
 		
