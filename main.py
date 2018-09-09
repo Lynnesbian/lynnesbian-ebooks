@@ -4,7 +4,7 @@ from os import path
 from bs4 import BeautifulSoup
 import re
 
-api_base_url = "https://botsin.space"
+api_base_url = "https://dragon.garden"
 
 if not path.exists("clientcred.secret"):
 	print("No clientcred.secret, registering application")

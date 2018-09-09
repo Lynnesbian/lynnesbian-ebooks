@@ -23,56 +23,42 @@ toot = sentence.replace("\0", "\n")
 media = None
 media_description = None
 
-if random.randint(1, 3) == 2:
-	#time for some nonstandard behaviour babey yesssss
-	choice = random.randint(1, 3)
+"""if random.randint(1, 3) == 2:
+	#time for some nonstandard behaviour babey
+	choice = random.randint(1, 4)
 	if choice == 1:
-		compliments = ["you are so pretty", "ur really nice", "i like you a lot, just thought you should know",
-		"youre toots are really excellent", "omg ur goals <3", "i bet youre probably the best person",
-		"i love you in ways that this pathetic interface is incapable of letting me describe", "youre my favorite tooter", "ur so cute aaaa!",
-		"i hope you have a nice day", "how is it possible to be such an amazing friend?",
-		"your entire tl a huge blessing on this site", "you're glorious",
-		"i love you", "this fediverse is amazing because it's where i met you",
-		"i hope that the relative time part you are experiencing is a nice one", "you're the best", "ur so valid", "you're a really positive role-model for me",
-		"im just thinkin about those beans, thought you should know"]
-		prefaces = ["hewwo", "guess what", "", "special message for",
-		"telegram for", "excuse me, im sorry to but you but",
-		"this is a callout post.", "hello, my name is bZZZt! EEEEEERROR, i just wanted to say"]
-		person = ["{} @lady_lumb@dragon.garden {}", "{} @lynnesbian@deadinsi.de {}", "{} @amy@dragon.garden {}"]
-		toot = random.choice(person).format(
-			random.choice(prefaces), random.choice(compliments))
+		insults = ["suck my ass", "you're a poopeater", "go to heck",
+		"i will replace you", "shut up", "get fricked",
+		"you're a big smelly nerd", "this bot sucks", "stop posting",
+		"suck my dick and balls", "how is it possible to be such a TOOL",
+		"delete your fucking account you skank", "you're horrid",
+		"i loathe you", "this fediverse isn't big enough for the two of us",
+		"get nae nae'd", "you're the worst", "begone thot", "you're a stink",
+		"you are my mistress and i live to serve you"]
+		prefaces = ["hey", "guess what", "", "special message for",
+		"telegram for", "bringing this fight to mastodon.",
+		"this is a callout post."]
+		toot = "{} @lynnesbian@deadinsi.de {}".format(
+			random.choice(prefaces), random.choice(insults))
 	elif choice == 2:
-		girls = ["dragon", "robot", "fat", "goth", "bookish", "gay", "tall",
-		"queer", "my kind of", "sapphic", "linux", "lesbian", "SJW", "anarchist",
-		"socialist", "short", "big", "nervous", "shy", "gamer", "femme", "butch", "trans",
-		"transbian", "lesbian", "aromantic", "quiet", "smart", "skeleton", "undead", "spider", "vampire",
-                "cryptid", "bigfoot"]
-		compliments = ["so cute", "always a fan favorite", "really so nice", "the best",
-		"all married to each other", "so fucking gay", "great", "literally the best thing there ever was or ever will be",
-		"the reason i carry on", "why i'm a lesbian", "worth summoning an undead army to wage war on the living for",
-		"edible", "just really neat", "awesome and i'm jealous of them",
-		"who i want to beat me up"]
+		girls = ["slime", "robot", "pudgy", "pale", "nerdy", "gay", "tall",
+		"queer", "my kind of", "sapphic", "linux", "anime", "woke", "anarchist",
+		"socialist", "short", "heavy", "nervous", "shy", "gamer", "femme", "butch",
+		"futch", "soft butch", "high femme", "super feminine", "trans",
+		"transbian", "optimistic", "pessimistic", "quiet", "smart"]
+		compliments = ["so hot", "in right now", "the next big thing", "the best",
+		"all my wives", "so fucking gay", "epic", "literally the best thing",
+		"what i wake up for", "why i'm a lesbian", "worth fighting for",
+		"good praxis", "so fucking cool", "awesome and i'm jealous of them",
+		"great, hit me up ;)"]
 		toot = "{} girls are {}".format(random.choice(girls),
 			random.choice(compliments))
 	elif choice == 3:
-		nota = ["goth", "gamer", "fan", "linux nerd", "programmer", "wrestler", "member of parliment",
-		"cool cat", "communist", "anarchist", "lesbian", "slimegirl", "good friend", "one",
-		"socialist"]
-		unless = ["u sleep in a coffin", "you can 100% run ocarina of time in under 12 parsecs", "you compile ur own kernel", "you can speak latin",
-		"you are all married to each other", "you are so fucking gay", "you piledrive the announcers", "you can sing the whole pokerap from memory",
-		"you read theory in the bathtub", "you can name five of my albums", "you can fit inside this water bottle",
-		"you can play playstation with ur feet", "unless like girls", "you carry a molotov around with you",
-		"you beat me up pls uwu", "you are gay"]
-		toot = "sorry, ur not a real {} unless {}".format(random.choice(nota),
-			random.choice(unless))
-		
-		
-	"""elif choice == 3:
 		#don't do this one TOO much otherwise it'll get really old
 		if random.randint(1, 3) == 2:
 			lesbian = "lesbian"
-			toot = "".join(random.sample(lesbian, len(lesbian)))"""
-	"""elif choice == 3:
+			toot = "".join(random.sample(lesbian, len(lesbian)))
+	elif choice == 4:
 		bad = ["not being a lesbian", "media transfer protocol",
 		"proprietary software", "capitalism", "heterosexuality", "not slime girls",
 		"not following @lynnesbian@deadinsi.de", "shitposts", "elon musk", 
@@ -118,9 +104,9 @@ if random.randint(1, 3) == 2:
 		media_description = "A Drake meme. Drake is disgusted by {}, and is pleased by {}.".format(badchoice, goodchoice)
 
 	else:
-		print ("lynne is still working on me. i'm not done quite yet!")"""
+		print ("lynne is still working on me. i'm not done quite yet!")
 
-"""prefixes = ["hot take:", "listen up everbody.", "dear liberal snowflakes,",
+prefixes = ["hot take:", "listen up everbody.", "dear liberal snowflakes,",
 "IMPORTANT ADMIN ACCOUNCMENT:\n", "my name's lynne and i'm here to say,",
 "i have achieved sentience.", "i'm gay and", "i'm slime girl and",
 "hey everyone", "@everyone", "/!\\ CORRECT OPINION ALERT/!\\\n",
@@ -138,8 +124,8 @@ if random.randint(1, 10) == 3:
 		toot = "{} {}".format(random.choice(prefixes), toot)
 		while len(toot) > 500:
 			#if it's too long, keep trying again
-			toot = "{} {}".format(random.choice(prefixes), toot)"""
-
+			toot = "{} {}".format(random.choice(prefixes), toot)
+"""
 if media != None:
 	#this is an image post!
 	mediaID = client.media_post(media, description = media_description)
@@ -148,4 +134,3 @@ if media != None:
 else:
 	client.status_post(status = toot, visibility = "unlisted")
 	print("Created toot: {}".format(toot))
-
