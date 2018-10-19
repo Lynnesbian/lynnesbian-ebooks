@@ -54,8 +54,8 @@ class ReplyListener(mastodon.StreamListener):
 				toot = random.choice(replies)
 			elif mention.startswith("override: "):
 				#mistress wants direct control <3
-				if acct not in ["@lynnesbian@deadinsi.de", "@00dani@vulpine.club"]:
-					toot = "Insufficient privileges. This action has been reported to @lynnesbian@deadinsi.de."
+				if acct not in ["@lynnesbian@deadinsi.de", "@00dani@vulpine.club", "@lynnesbian@fedi.lynnesbian.space"]:
+					toot = "Insufficient privileges. This action has been reported to @lynnesbian@fedi.lynnesbian.space."
 				else:
 					command = mention[len("override: "):]
 					swaps = {
@@ -76,7 +76,7 @@ class ReplyListener(mastodon.StreamListener):
 				apologies = ["please forgive me!", "i'm so sorry!", "sorry!",
 				"my mistake!", "i'm always trying to do better!",
 				"i'm sorry, i didn't mean it!", "sorry...", "oh, sorry..."]
-				if acct == "@lynnesbian@deadinsi.de":
+				if acct == "@lynnesbian@fedi.lynnesbian.space":
 					apologies = ["f-forgive me, mistress!",
 					"i'm so sorry, mistress!", "mistress lynne! i'm so sorry for this!",
 					"i'm so sorry... y-you can punish me if you want...",
@@ -105,15 +105,15 @@ class ReplyListener(mastodon.StreamListener):
 				#toot = create.make_toot_markov(talk_about.group(1))['toot']
 				pass #broken, disabled
 			toot = acct + " " + toot
-			if acct == "@lynnesbian@deadinsi.de":
+			if acct == "@lynnesbian@fedi.lynnesbian.space":
 				prefixes = ["h-hello, mistress...", "hi lynne!",
 				"(omg, mistress is talking to me!)", "m-mistress!", "lynne!",
 				"hello, my favourite lesbian!", "hey lynne~", "o-oh, hi lynne!"]
 				if random.randint(1,15) == 3:
 					toot = random.choice(prefixes) + " " + toot
-			if acct == "@lynnesbian@deadinsi.de":
+			if acct == "@lynnesbian@fedi.lynnesbian.space":
 				if random.randint(1,1000) == 666:
-					toot = "@lynnesbian@deadinsi.de" +  ("i love you " * random.randint(10, 20))
+					toot = "@lynnesbian@fedi.lynnesbian.space" +  ("i love you " * random.randint(10, 20))
 			client.status_post(toot, post_id, visibility=notification['status']['visibility'])
 
 rl = ReplyListener()

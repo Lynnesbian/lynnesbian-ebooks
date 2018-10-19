@@ -52,10 +52,8 @@ def make_toot(force_markov = False, args = None, query = None):
 	if force_markov:
 		return make_toot_markov(query)
 	else:
-		if random.randint(1,2)==2:
-			return make_toot_nonstandard()
-		else:
-			return make_toot_markov(query)
+		func = random.choice([make_toot_nonstandard, make_toot_markov])
+		return func()
 
 def make_toot_markov(query = None):
 	tries = 0
@@ -81,7 +79,7 @@ def make_toot_nonstandard():
 	# print("tooting")
 	media = None
 	media_description = None
-	toot = "An error occurred! @lynnesbian@deadinsi.de mistress, I think you forgot to handle all possible values for choice!"
+	toot = "An error occurred! @lynnesbian@fedi.lynnesbian.space mistress, I think you forgot to handle all possible values for choice!"
 
 	choice = random.randint(1, 12)
 	# choice = 69
@@ -111,7 +109,7 @@ def make_toot_nonstandard():
 		"hey cutie~", "psst", "special message for", "good morning", "",
 		"*breathing heavily*", "mistress lynne...", "my queen,", "*panting*",
 		"n-nnn... lynne...", "omg", "um..."]
-		toot = "{} @lynnesbian@deadinsi.de {}".format(
+		toot = "{} @lynnesbian@fedi.lynnesbian.space {}".format(
 			random.choice(prefaces), random.choice(compliments))
 	elif choice == 2:
 		girls = ["slime", "robot", "pudgy", "pale", "nerdy", "gay", "tall",
@@ -120,7 +118,7 @@ def make_toot_nonstandard():
 		"futch", "soft butch", "high femme", "super feminine", "trans",
 		"transbian", "optimistic", "pessimistic", "quiet", "smart", "deep voice", 
 		"ghost", "programmer", "ace", "bi", "silly", "goth", "nonbinary", 
-		"@Petra_fied@deadinsi.de type", "all", "thicc", "kinky",
+		"@Petra_fied@fedi.lynnesbian.space type", "all", "thicc", "kinky",
 		"girls in rainbow thigh high socks, omg... those", "heavy", "chubby"]
 		compliments = ["so hot", "in right now", "the next big thing", "the best",
 		"all my wives", "so fucking gay", "super cute", "literally the best thing",
@@ -170,7 +168,7 @@ def make_toot_nonstandard():
 		bad = ["not being a lesbian", "media transfer protocol",
 		"proprietary software", "capitalism", "heterosexuality",
 		"accidentally hitting on\na straight person", "battery leakage",
-		"not following\n@lynnesbian@deadinsi.de", "shitposts", "elon musk", 
+		"not following\n@lynnesbian@fedi.lynnesbian.space", "shitposts", "elon musk", 
 		"reply guys", "gamers", "alt-right bullshit", "twitter", "subtoots",
 		"instance drama", "billionaires", "millionaires", "anarcho-capitalists",
 		"new unread voicemail", "the lorax movie", "realtoddhowthe intellectual darkweb",
@@ -216,7 +214,7 @@ def make_toot_nonstandard():
 		"socialism", "staying woke", "intersectionalism", "femboys", "gayyyyy",
 		"the tendency of the rate\nof profit to fall", "being gay", "bottom text",
 		"the colour purple", "the number 3, as\nit is my favourite\nnumber", "me",
-		"@lynnesbian@deadinsi.de", "respecting people\\'s pronouns",
+		"@lynnesbian@fedi.lynnesbian.space", "respecting people\\'s pronouns",
 		"being a nice person", "supporting indie artists", "having a big mood",
 		"speedrunning", "decentralising the web", "encryption", "comraderie",
 		"seizing the means\nof production", "Karl Marx", "Pyotr Kropotkin",
@@ -348,13 +346,13 @@ def make_toot_nonstandard():
 	"i may be a lowly python script, but", "", "BZZZZZT", "heads up:", 
 	"from now on,", "protip:", "life advice:", "take it from me,",
 	"as a slime girl,", "as a robot,", "im robot and",
-	"@lynnesbian@deadinsi.de i have made a post for you, mistress:\n",
+	"@lynnesbian@fedi.lynnesbian.space i have made a post for you, mistress:\n",
 	"good evening.", "i believe it was karl marx who said", "*kicks down your door*",
 	"*screaming*", "okay but", "boost if", "it's official:", "breaking:", 
 	"it brings me no joy to say this...", "*flops into the fediverse*",
 	"this is my gender:", "*slithers up to u*", "[SCREAMING LOUDLY]",
 	"*in baby voice*", "#epic", "#hashtagsareforlosers", "calling all gamers.",
-	"*fires gun into the air*", "@Petra_fied@deadinsi.de is cute and", 
+	"*fires gun into the air*", "@Petra_fied@fedi.lynnesbian.space is cute and", 
 	"ummmm no sweaty.", "*cis person voice*", "*extremely white voice*",
 	"gay"]
 
