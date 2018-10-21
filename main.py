@@ -6,38 +6,43 @@
 from mastodon import Mastodon
 from os import path
 from bs4 import BeautifulSoup
-import shutil, os, sqlite3, signal, sys, json
+import os, sqlite3, signal, sys, json, re
+import requests
 # import re
 
 scopes = ["read:statuses", "read:accounts", "read:follows", "write:statuses"]
 cfg = json.load(open('config.json', 'r'))
 
-if not path.exists("clientcred.secret"):
+if "client" not in cfg:
+	print("No client credentials, registering application")
+	client_id, client_secret = Mastodon.create_app("mstdn-ebooks",
+		api_base_url=cfg['site'],
+		scopes=scopes,
+		website="https://github.com/Lynnesbian/mstdn-ebooks")
 
-    print("No clientcred.secret, registering application")
-    Mastodon.create_app("lynnesbian_mastodon_ebooks", api_base_url=cfg['site'], to_file="clientcred.secret", scopes=scopes, website="https://github.com/Lynnesbian/mastodon-ebooks")
+	cfg['client'] = {
+		"id": client_id,
+		"secret": client_secret
+	}
 
-if not path.exists("usercred.secret"):
-    print("No usercred.secret, registering application")
-    client = Mastodon(client_id="clientcred.secret", api_base_url=cfg['site'])
-    print("Visit this url:")
-    print(client.auth_request_url(scopes=scopes))
-    client.log_in(code=input("Secret: "), to_file="usercred.secret", scopes=scopes)
+if "secret" not in cfg:
+	print("No user credentials, logging in")
+	client = Mastodon(client_id = cfg['client']['id'],
+		client_secret = cfg['client']['secret'],
+		api_base_url=cfg['site'])
+
+	print("Open this URL: {}".format(client.auth_request_url(scopes=scopes)))
+	cfg['secret'] = client.log_in(code=input("Secret: "), scopes=scopes)
+
+json.dump(cfg, open("config.json", "w+"))
 
 def parse_toot(toot):
 	if toot.spoiler_text != "": return
 	if toot.reblog is not None: return
-	if toot.visibility not in ["public", "unlisted"]: return
+	# if toot.visibility not in ["public", "unlisted"]: return
 
 	soup = BeautifulSoup(toot.content, "html.parser")
 	
-	# pull the mentions out
-	# for mention in soup.select("span.h-card"):
-	#     mention.unwrap()
-
-	# for mention in soup.select("a.u-url.mention"):
-	#     mention.unwrap()
-
 	# this is the code that removes all mentions
 	# TODO: make it so that it removes the @ and instance but keeps the name
 	for mention in soup.select("span.h-card"):
@@ -64,9 +69,6 @@ def parse_toot(toot):
 
 	text = map(lambda a: a.strip(), soup.get_text().strip().split("\n"))
 
-	# next up: store this and patch markovify to take it
-	# return {"text": text, "mentions": mentions, "links": links}
-	# it's 4am though so we're not doing that now, but i still want the parser updates
 	#todo: we split above and join now, which is dumb, but i don't wanna mess with the map code bc i don't understand it uwu
 	text = "\n".join(list(text)) 
 	text = text.replace("&apos;", "'")
@@ -81,7 +83,8 @@ def get_toots(client, id, since_id):
 			if t != None:
 				yield {
 					"content": t,
-					"id": toot.id
+					"id": toot.id,
+					"uri": toot.uri,
 				}
 		try:
 			toots = client.fetch_next(toots)
@@ -95,17 +98,18 @@ def get_toots(client, id, since_id):
 			print(i)
 
 client = Mastodon(
-		client_id="clientcred.secret", 
-		access_token="usercred.secret", 
-		api_base_url=cfg['site'])
+	client_id=cfg['client']['id'],
+	client_secret = cfg['client']['secret'], 
+	access_token=cfg['secret'], 
+	api_base_url=cfg['site'])
 
 me = client.account_verify_credentials()
 following = client.account_following(me.id)
 
-db = sqlite3.connect("toots.db")
+db = sqlite3.connect("ebooks.db")
 db.text_factory=str
 c = db.cursor()
-c.execute("CREATE TABLE IF NOT EXISTS `toots` (id INT NOT NULL UNIQUE PRIMARY KEY, userid INT NOT NULL, content VARCHAR NOT NULL) WITHOUT ROWID")
+c.execute("CREATE TABLE IF NOT EXISTS `toots` (id INT NOT NULL UNIQUE PRIMARY KEY, userid INT NOT NULL, uri VARCHAR NOT NULL, content VARCHAR NOT NULL) WITHOUT ROWID")
 db.commit()
 
 def handleCtrlC(signal, frame):
@@ -121,12 +125,30 @@ for f in following:
 		last_toot = last_toot[0]
 	else:
 		last_toot = 0
-	print("Downloading toots for user @{}, starting from {}".format(f.username, last_toot))
-	for t in get_toots(client, f.id, last_toot):
-		# try:
-		c.execute("REPLACE INTO toots (id, userid, content) VALUES (?, ?, ?)", (t['id'], f.id, t['content']))
-		# except:
-		# 	pass #ignore toots that can't be encoded properly
+	print("Harvesting toots for user @{}, starting from {}".format(f.acct, last_toot))
+	# for t in get_toots(client, f.id, last_toot):
+	# 	# try:
+	# 	c.execute("REPLACE INTO toots (id, userid, uri, content) VALUES (?, ?, ?, ?)", (t['id'], f.id, t['uri'], t['content']))
+	# 	# except:
+	# 	# 	pass #ignore toots that can't be encoded properly
+
+	#find the user's activitypub outbox
+	print("WebFingering...")
+	instance = re.search(r"^.*@(.+)", f.acct)
+	if instance == None:
+		instance = re.search(r"https?:\/\/(.*)", cfg['site']).group(1)
+	else:
+		instance = instance.group(1)
+
+	# print("{} is on {}".format(f.acct, instance))
+	r = requests.get("https://{}/.well-known/host-meta")
+	# template="([^"]+)"
+
+	current = None
+	while True:
+		sys.exit(0)
+
+
 
 db.commit()
 db.execute("VACUUM") #compact db
