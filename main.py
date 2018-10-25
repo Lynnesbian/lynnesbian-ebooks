@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# toot downloader version two!!
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -8,7 +9,6 @@ from os import path
 from bs4 import BeautifulSoup
 import os, sqlite3, signal, sys, json, re
 import requests
-# import re
 
 scopes = ["read:statuses", "read:accounts", "read:follows", "write:statuses"]
 cfg = json.load(open('config.json', 'r'))
@@ -36,66 +36,40 @@ if "secret" not in cfg:
 
 json.dump(cfg, open("config.json", "w+"))
 
-def parse_toot(toot):
-	if toot.spoiler_text != "": return
-	if toot.reblog is not None: return
-	# if toot.visibility not in ["public", "unlisted"]: return
-
-	soup = BeautifulSoup(toot.content, "html.parser")
+def extract_toot(toot):
+	toot = toot.replace("&apos;", "'")
+	toot = toot.replace("&quot;", '"')
+	soup = BeautifulSoup(toot, "html.parser")
 	
 	# this is the code that removes all mentions
 	# TODO: make it so that it removes the @ and instance but keeps the name
 	for mention in soup.select("span.h-card"):
-		mention.decompose()
+		mention.a.unwrap()
+		mention.span.unwrap()
 	
-	# make all linebreaks actual linebreaks
+	# replace <br> with linebreak
 	for lb in soup.select("br"):
 		lb.insert_after("\n")
 		lb.decompose()
 
-	# make each p element its own line because sometimes they decide not to be
+	# replace <p> with linebreak
 	for p in soup.select("p"):
 		p.insert_after("\n")
 		p.unwrap()
 	
-	# keep hashtags in the toots
+	# fix hashtags
 	for ht in soup.select("a.hashtag"):
 		ht.unwrap()
 
-	# unwrap all links (i like the bots posting links)
+	# fix links
 	for link in soup.select("a"):
 		link.insert_after(link["href"])
 		link.decompose()
 
-	text = map(lambda a: a.strip(), soup.get_text().strip().split("\n"))
-
-	#todo: we split above and join now, which is dumb, but i don't wanna mess with the map code bc i don't understand it uwu
-	text = "\n".join(list(text)) 
-	text = text.replace("&apos;", "'")
-	return text
-
-def get_toots(client, id, since_id):
-	i = 0
-	toots = client.account_statuses(id, since_id = since_id)
-	while toots is not None and len(toots) > 0:
-		for toot in toots:
-			t = parse_toot(toot)
-			if t != None:
-				yield {
-					"content": t,
-					"id": toot.id,
-					"uri": toot.uri,
-				}
-		try:
-			toots = client.fetch_next(toots)
-		except TimeoutError:
-			print("Operation timed out, committing to database and exiting.")
-			db.commit()
-			db.close()
-			sys.exit(1)
-		i += 1
-		if i%10 == 0:
-			print(i)
+	toot = soup.get_text()
+	toot = toot.rstrip("\n") #remove trailing newline
+	toot = toot.replace("@", "@\u202B") #put a zws between @ and username to avoid mentioning
+	return(toot)
 
 client = Mastodon(
 	client_id=cfg['client']['id'],
@@ -106,7 +80,7 @@ client = Mastodon(
 me = client.account_verify_credentials()
 following = client.account_following(me.id)
 
-db = sqlite3.connect("ebooks.db")
+db = sqlite3.connect("toots.db")
 db.text_factory=str
 c = db.cursor()
 c.execute("CREATE TABLE IF NOT EXISTS `toots` (id INT NOT NULL UNIQUE PRIMARY KEY, userid INT NOT NULL, uri VARCHAR NOT NULL, content VARCHAR NOT NULL) WITHOUT ROWID")
@@ -126,11 +100,6 @@ for f in following:
 	else:
 		last_toot = 0
 	print("Harvesting toots for user @{}, starting from {}".format(f.acct, last_toot))
-	# for t in get_toots(client, f.id, last_toot):
-	# 	# try:
-	# 	c.execute("REPLACE INTO toots (id, userid, uri, content) VALUES (?, ?, ?, ?)", (t['id'], f.id, t['uri'], t['content']))
-	# 	# except:
-	# 	# 	pass #ignore toots that can't be encoded properly
 
 	#find the user's activitypub outbox
 	print("WebFingering...")
@@ -141,14 +110,54 @@ for f in following:
 		instance = instance.group(1)
 
 	# print("{} is on {}".format(f.acct, instance))
-	r = requests.get("https://{}/.well-known/host-meta")
-	# template="([^"]+)"
-
+	try:
+		r = requests.get("https://{}/.well-known/host-meta".format(instance))
+		uri = re.search(r'template="([^"]+)"', r.text).group(1)
+		uri = uri.format(uri = "{}@{}".format(f.username, instance))
+		r = requests.get(uri)
+		uri = r.json()['aliases'][1] #TODO: find out if it's safe to rely on this
+		uri = "{}/outbox?page=true&min_id={}".format(uri, last_toot)
+		r = requests.get(uri)
+		j = r.json()
+	except Exception:
+		print("oopsy woopsy!! we made a fucky wucky!!!\n(we're probably rate limited, please hang up and try again)")
+		sys.exit(1)
+	
+	print("Downloading and parsing toots", end='', flush=True)
 	current = None
-	while True:
-		sys.exit(0)
-
-
+	try:
+		while len(j['orderedItems']) > 0:
+			for oi in j['orderedItems']:
+				if oi['type'] == "Create":
+					# its a toost baby
+					content = oi['object']['content']
+					if oi['object']['summary'] != None:
+						#don't download CW'd toots
+						continue
+					toot = extract_toot(content)
+					# print(toot)
+					try:
+						c.execute("REPLACE INTO toots (id, userid, uri, content) VALUES (?, ?, ?, ?)",
+							(re.search(r"[^\/]+$", oi['object']['id']).group(0),
+							f.id,
+							oi['object']['id'],
+							toot
+							)
+						)
+						pass
+					except:
+						pass #ignore any toots that don't go into the DB
+			# sys.exit(0)
+			r = requests.get(j['prev'])
+			j = r.json()
+			print('.', end='', flush=True)
+		print(" Done!")
+		db.commit()
+	except:
+		print("Encountered an error! Saving toots to database and exiting.")
+		db.commit()
+		db.close()
+		sys.exit(1)
 
 db.commit()
 db.execute("VACUUM") #compact db
