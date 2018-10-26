@@ -10,7 +10,8 @@ from bs4 import BeautifulSoup
 
 cfg = json.load(open('config.json', 'r'))
 client = mastodon.Mastodon(
-        client_id="clientcred.secret", 
+        client_id=cfg['client']['id'],
+        client_secret=cfg['client']['secret'], 
         access_token="usercred.secret", 
         api_base_url=cfg['site'])
 
