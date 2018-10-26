@@ -30,7 +30,7 @@ def make_sentence(output, query = None):
 	if query == None:
 		toots = c.execute("SELECT content FROM `toots`").fetchall()
 	else:
-		query = "%{}%".format(query)
+		query = "?{}?".format(query)
 		toots = c.execute("SELECT content FROM `toots` WHERE content LIKE ?", (query,)).fetchall()
 	toots_str = ""
 	if len(toots) == 0:
@@ -44,7 +44,7 @@ def make_sentence(output, query = None):
 	os.remove("toots-copy.db")
 
 	sentence = None
-	while sentence is None:
+	while sentence is None or re.match("^@\u202B", sentence):
 		sentence = model.make_short_sentence(500, tries=10000)
 	output.send(sentence)
 
@@ -58,7 +58,7 @@ def make_toot(force_markov = False, args = None, query = None):
 def make_toot_markov(query = None):
 	tries = 0
 	toot = None
-	while toot == None and tries < 10:
+	while toot == None and tries < 25:
 		pin, pout = multiprocessing.Pipe(False)
 		p = multiprocessing.Process(target = make_sentence, args = [pout, query])
 		p.start()
@@ -70,6 +70,8 @@ def make_toot_markov(query = None):
 			tries = tries + 1
 		else:
 			toot = pin.recv()
+	if toot == None:
+		toot = "Mistress @lynnesbian@fedi.lynnesbian.space, I was unable to generate a toot using the markov method! This probably means that my corpus wasn't big enough... I need them to be big, Mistress, otherwise I won't work... Can you, um, help me with that, somehow?"
 	return {
 			"toot":toot,
 			"media":None
@@ -79,7 +81,7 @@ def make_toot_nonstandard():
 	# print("tooting")
 	media = None
 	media_description = None
-	toot = "An error occurred! @lynnesbian@fedi.lynnesbian.space mistress, I think you forgot to handle all possible values for choice!"
+	toot = "An error occurred! Mistress @lynnesbian@fedi.lynnesbian.space, I think you forgot to handle all possible values for choice!"
 
 	choice = random.randint(1, 12)
 	# choice = 69
