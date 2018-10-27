@@ -115,7 +115,11 @@ class ReplyListener(mastodon.StreamListener):
 			if acct == "@lynnesbian@fedi.lynnesbian.space":
 				if random.randint(1,1000) == 666:
 					toot = "@lynnesbian@fedi.lynnesbian.space" +  ("i love you " * random.randint(10, 20))
-			client.status_post(toot, post_id, visibility=notification['status']['visibility'])
+
+			visibility = notification['status']['visibility']
+			if visibility == 'public':
+			    visibility = "unlisted"
+			client.status_post(toot, post_id, visibility=visibility)
 
 rl = ReplyListener()
 client.stream_user(rl)
