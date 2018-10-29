@@ -12,7 +12,7 @@ cfg = json.load(open('config.json', 'r'))
 client = mastodon.Mastodon(
         client_id=cfg['client']['id'],
         client_secret=cfg['client']['secret'], 
-        access_token="usercred.secret", 
+        access_token=cfg['secret'], 
         api_base_url=cfg['site'])
 
 def extract_toot(toot):
