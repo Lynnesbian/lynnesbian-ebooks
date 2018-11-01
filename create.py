@@ -336,7 +336,7 @@ def make_toot_nonstandard():
 		media = "meme.jpg"
 
 	else:
-		toot = "THIS TEXT SHOULD NEVER APPEAR! @lynnesbian@deadinside, mistress," \
+		toot = "THIS TEXT SHOULD NEVER APPEAR! @lynnesbian@fedi.lynnesbian.space, mistress," \
 		+ " you have made a terrible mistake!!"
 
 	prefixes = ["hot take:", "listen up everbody.", "dear liberal snowflakes,",
@@ -386,7 +386,7 @@ def make_toot_nonstandard():
 				#if it's too long, keep trying again
 				toot = "{}{}".format(ogtoot, random.choice(suffixes))
 
-	if random.randint(1, 100) == 3:
+	if random.randint(1, 1000) == 3:
 		toot = "girls" #sometimes it just says "girls"
 
 	if media != None:
@@ -397,7 +397,7 @@ def make_toot_nonstandard():
 			# 	media_ids = [mediaID], visibility = "unlisted")
 		return {
 			"toot": media_description,
-			"media": "meme.jpg"
+			"media": media
 		}
 		# print("Created media toot: " + media_description)
 	else:

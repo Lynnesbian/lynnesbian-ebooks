@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import os, sqlite3, signal, sys, json, re
 import requests
 
-scopes = ["read:statuses", "read:accounts", "read:follows", "write:statuses", "read:notifications"]
+scopes = ["read:statuses", "read:accounts", "read:follows", "write:statuses", "read:notifications", "write:media"]
 cfg = json.load(open('config.json', 'r'))
 
 if "client" not in cfg:
