@@ -116,12 +116,22 @@ for f in following:
 		uri = uri.format(uri = "{}@{}".format(f.username, instance))
 		r = requests.get(uri)
 		uri = r.json()['aliases'][1] #TODO: find out if it's safe to rely on this
-		uri = "{}/outbox?page=true&min_id={}".format(uri, last_toot)
+		uri = "{}/outbox?page=true".format(uri)
 		r = requests.get(uri)
 		j = r.json()
 	except Exception:
 		print("oopsy woopsy!! we made a fucky wucky!!!\n(we're probably rate limited, please hang up and try again)")
 		sys.exit(1)
+
+	if type(j['first']) != str:
+		print("using pleroma patch")
+		pleroma = True
+		j = j['first']
+
+	if not pleroma:
+		uri = "{}/outbox?page=true&min_id={}".format(uri, last_toot)
+		r = requests.get(uri)
+		j = r.json()
 	
 	print("Downloading and parsing toots", end='', flush=True)
 	current = None
@@ -137,6 +147,10 @@ for f in following:
 					toot = extract_toot(content)
 					# print(toot)
 					try:
+						if pleroma:
+							if c.execute("SELECT COUNT(*) FROM toots WHERE id LIKE ?", (oi['object']['id'],)):
+								#we've caught up to the notices we've already downloaded, so we can stop now
+								break
 						c.execute("REPLACE INTO toots (id, userid, uri, content) VALUES (?, ?, ?, ?)",
 							(re.search(r"[^\/]+$", oi['object']['id']).group(0),
 							f.id,
@@ -148,7 +162,10 @@ for f in following:
 					except:
 						pass #ignore any toots that don't go into the DB
 			# sys.exit(0)
-			r = requests.get(j['prev'])
+			if not pleroma: 
+				r = requests.get(j['prev'])
+			else:
+				r = requests.get(j['next'])
 			j = r.json()
 			print('.', end='', flush=True)
 		print(" Done!")

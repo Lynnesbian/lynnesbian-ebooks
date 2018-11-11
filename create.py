@@ -52,7 +52,7 @@ def make_toot(force_markov = False, args = None, query = None):
 	if force_markov:
 		return make_toot_markov(query)
 	else:
-		func = random.choice([make_toot_nonstandard, make_toot_markov])
+		func = random.choice([make_toot_nonstandard, make_toot_markov, make_toot_markov])
 		return func()
 
 def make_toot_markov(query = None):
@@ -83,7 +83,7 @@ def make_toot_nonstandard():
 	media_description = None
 	toot = "An error occurred! Mistress @lynnesbian@fedi.lynnesbian.space, I think you forgot to handle all possible values for choice!"
 
-	choice = random.randint(1, 12)
+	choice = random.randint(1, 15)
 	# choice = 69
 	if choice == 1:
 		insults = ["suck my ass", "you're a poopeater", "go to heck",
@@ -102,7 +102,8 @@ def make_toot_nonstandard():
 		"you're the hottest girl in the world", "you're the love of my life",
 		"you're just... you take my breath away <3", "i want youuu",
 		"please DM me... i'm, um, in the mood...", "i think i'm in heat...",
-		"i don't care what you are, bunny or human, i just want you!"]
+		"i don't care what you are, bunny or human, i just want you!",
+		"call me maybe~", "i love you!", "i... enjoyed your latest story post..."]
 		# prefaces = ["hey", "guess what", "", "special message for",
 		# "telegram for", "bringing this fight to mastodon.",
 		# "this is a callout post.", ""]
@@ -160,7 +161,7 @@ def make_toot_nonstandard():
 		"anus", "gay", "petra", "poop", "butt", "robot", "BDSM", "email", "bitcoin",
 		"spaghetti", "fart", "VapeApe", "mastodon", "masto", "fedi", "coin",
 		"dick", "poly", "rainbow", "gay", "super", "GIMP", "splat", "steam",
-		"apple", "dump", "bit", "doge", "slorp"]
+		"apple", "dump", "bit", "doge", "slorp", "mine"]
 		value = random.randint(100, 1000000) / 100.0
 		toot = "{}coin is valued at ${} USD".format(random.choice(types), value)
 	elif choice >= 6:
@@ -173,7 +174,7 @@ def make_toot_nonstandard():
 		"not following\n@lynnesbian@fedi.lynnesbian.space", "shitposts", "elon musk", 
 		"reply guys", "gamers", "alt-right bullshit", "twitter", "subtoots",
 		"instance drama", "billionaires", "millionaires", "anarcho-capitalists",
-		"new unread voicemail", "the lorax movie", "realtoddhowthe intellectual darkweb",
+		"new unread voicemail", "the lorax movie", "the intellectual darkweb",
 		'"ethical" capitalism', "disease, pestilence, war, famine", "ISIS",
 		"citrustwee claiming\nit\\'s her birthday", "being straight",
 		"pinging @everyone on\na discord with\nmore than 10 people", "brocialism",
@@ -188,11 +189,11 @@ def make_toot_nonstandard():
 		"using gay as\nan insult", "calling toots \"tweets\"",
 		"wolf cock on\nthe timeline\nwithout a CW", "the Fox Pussy Incident",
 		"overly long text\nthat has a chance\nof not being correctly\nformatted",
-		"men with anime\ngirl avatars", "logic guys",
+		"men with anime\ngirl avatars", "logic guys", "gender essentialism",
 		"monopoly (the economic thing)", "monopoly (board game)",
-		"being sucked into\na black hole", "unfunny jokes",
+		"being sucked into\na black hole", "unfunny jokes", "slum/slog/etc",
 		"AAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAA", "that guy everyone hates",
-		"the second level in\nsonic spinball", "bitcoin memers",
+		"the second level in\nsonic spinball", "bitcoin memers", "minecoin",
 		"the entire right wing", "conservatism", "doodoo faeces", "neoliberalism",
 		"islamophobia", "hating on bots", "farts", "EA games", "intel GPUs",
 		"hating a thing because\nit\\'s mainstream", "war", "the bourgeois",
