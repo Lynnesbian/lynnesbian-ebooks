@@ -8,6 +8,8 @@ This version makes quite a few changes from [the original](https://github.com/Je
   - Doesn't unecessarily redownload all toots every time
 - its very cute
   
+Please don't fork this bot, fork [this one](https://github.com/Lynnesbian/mstdn-ebooks) instead uwu
+
 ## Install/usage guide
 An installation and usage guide is available for unix-based platforms (linux, macOS...) [here](https://cloud.lynnesbian.space/s/Qxxm2sYdMZaqWat).
 
