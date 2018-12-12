@@ -32,7 +32,7 @@ if __name__ == '__main__':
 				client.status_post(toot['toot'].replace("\n", " "),
 					media_ids = [mediaID], visibility = "unlisted")
 			else:
-				client.status_post(toot['toot'], visibility = 'unlisted')
+				client.status_post(toot['toot'], visibility = 'unlisted', spoiler_text = cfg['cw'])
 		except Exception as err:
 			toot = {
 			"toot":

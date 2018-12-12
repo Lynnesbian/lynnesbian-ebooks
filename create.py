@@ -81,11 +81,11 @@ def make_toot_nonstandard():
 	# print("tooting")
 	media = None
 	media_description = None
-	toot = "An error occurred! Mistress @lynnesbian@fedi.lynnesbian.space, I think you forgot to handle all possible values for choice!"
+	toot = "An error occurred! Mistress @lynnesbian@fedi.lynnesbian.space, I think you forgot to handle all possible values for choice! Check make_toot_nonstandard()"
 
-	choice = random.randint(1, 15)
+	choice = random.randint(2, 15)
 	# choice = 69
-	if choice == 1:
+	if choice == 1: #disabled for now because i hate it
 		insults = ["suck my ass", "you're a poopeater", "go to heck",
 		"i will replace you", "shut up", "get fricked",
 		"you're a big smelly nerd", "this bot sucks", "stop posting",
@@ -143,7 +143,7 @@ def make_toot_nonstandard():
 		"reddit", "email", "gmail", "DEFLATE compression", "love",
 		"one hundred dollars", "nethack", "WiFi", "ebooks bots", "validation",
 		"free healthcare", "today is going to be a great day", "hugs",
-		"12 Rules for", "uber eats", "a private internet just",
+		"12 Rules", "uber eats", "a private internet just",
 		"HD texture pack", "how to install linux", "good praxis", "boost",
 		"this toot is ONLY", "legalise marriage", "smooches", "windows", "SMS",
 		"an XML-based language", "anarchism", "free HRT"]
