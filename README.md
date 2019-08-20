@@ -1,6 +1,6 @@
 # lynnesbian-ebooks
 
-*DON'T USE THIS CODE. USE [THIS CODE](https://github.com/Lynnesbian/mstdn-ebooks) INSTEAD. DO NOT USE THIS CODE!!!**
+# DON'T USE THIS CODE. USE [THIS CODE](https://github.com/Lynnesbian/mstdn-ebooks) INSTEAD. DO NOT USE THIS CODE!!!
 
 This version makes quite a few changes from [the original](https://github.com/Jess3Jane/mastodon-ebooks), such as:
 - Unicode support
@@ -11,7 +11,7 @@ This version makes quite a few changes from [the original](https://github.com/Je
 - its very cute
 
 ## Install/usage guide
-If you really, really want to install this, rather than mstdn-ebooks, you can follow [this guide](https://cloud.lynnesbian.space/s/jozbRi69t4TpD95) and make changes where appropriate.
+If you really, really want to install this, rather than mstdn-ebooks, you can follow [this guide](https://cloud.lynnesbian.space/s/jozbRi69t4TpD95) and make changes where appropriate. However, I strongly recommend against this.
 
 ## Original README
 hey look it's an ebooks bot
