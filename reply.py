@@ -41,6 +41,21 @@ class ReplyListener(mastodon.StreamListener):
 		if notification['type'] == 'mention':
 			acct = "@" + notification['account']['acct']
 			post_id = notification['status']['id']
+			# check if we've already been participating in this thread
+			try:
+				context = client.status_context(post_id)
+			except:
+				print("failed to fetch thread context")
+				return
+			me = client.account_verify_credentials()['id']
+			posts = 0
+			for post in context['ancestors']:
+				if post['account']['id'] == me:
+					posts += 1
+					if posts >= cfg['max_thread_length']:
+						# stop replying
+						print("didn't reply (max_thread_length exceeded)")
+						return
 			mention = extract_toot(notification['status']['content'])
 			toot = create.make_toot(True)['toot']
 			# compat = re.match("^compatibility check: (@[^@]+@[^ ]+) (?:and|&) (@[^@]+@[^ ]+)", mention)

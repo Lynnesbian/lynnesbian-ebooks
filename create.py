@@ -28,7 +28,7 @@ def make_sentence(output, query = None):
 	db.text_factory=str
 	c = db.cursor()
 	if query == None:
-		toots = c.execute("SELECT content FROM `toots`").fetchall()
+		toots = c.execute("SELECT content FROM `toots` WHERE cw = 0").fetchall()
 	else:
 		query = "?{}?".format(query)
 		toots = c.execute("SELECT content FROM `toots` WHERE content LIKE ?", (query,)).fetchall()
@@ -121,15 +121,17 @@ def make_toot_nonstandard():
 		"futch", "soft butch", "high femme", "super feminine", "trans",
 		"transbian", "optimistic", "pessimistic", "quiet", "smart", "deep voice", 
 		"ghost", "programmer", "ace", "bi", "silly", "goth", "nonbinary", 
-		"@Petra_fied@fedi.lynnesbian.space type", "all", "thicc", "kinky",
-		"girls in rainbow thigh high socks, omg... those", "heavy", "chubby"]
+		"petra type", "all", "thicc", "kinky",
+		"girls in rainbow thigh high socks, omg... those", "heavy", "chubby",
+		"luna type"]
 		compliments = ["so hot", "in right now", "the next big thing", "the best",
 		"all my wives", "so fucking gay", "super cute", "literally the best thing",
 		"what i wake up for", "why i'm a lesbian", "worth fighting for",
 		"good praxis", "so fucking cool", "awesome and i'm jealous of them",
 		"great, hit me up ;)", "amazing. bless them all", "heaven", "bae",
 		"gay af", "so hot. you should add lynne on discord.", "1000% gay",
-		"prime marriage material tbh"]
+		"prime marriage material tbh", "almost as cute as luna",
+		"almost as cute as lucy"]
 		toot = "{} girls are {}".format(random.choice(girls),
 			random.choice(compliments))
 	elif choice == 3:
@@ -154,7 +156,7 @@ def make_toot_nonstandard():
 		"danny devito", "the blockchain", "the greater good", "socialists",
 		"vampires", "goths", "gay people", "president", "lynne",
 		"the girl reading this", "anarchists", "gay lovers", "the queer community",
-		"shitposters"]
+		"shitposters", "lucy", "petra", "luna"]
 		toot = "{} for {}".format(random.choice(services), random.choice(demographics))
 	elif choice == 5:
 		types = ["slime", "dick", "lynne", "PickleRick", "epic", "meme",
@@ -201,7 +203,9 @@ def make_toot_nonstandard():
 		"extorting the poor", "the blockchain", "death", "The Straights",
 		"Linus Torvalds being\nan asshole for\nno reason", "chan culture",
 		"not tipping well\n(if you can\nafford it)", "poop", "cum ritz",
-		"removing artist\\'s URLs\nfrom memes"]
+		"removing artist\\'s URLs\nfrom memes", "the \"n\"bn", "free speech",
+		"the \"sexy\" corncob picture", "OCRbot", "sonic games",
+		"switch eshop prices"]
 
 		good = ["generating memes with\nimagemagick and python", "being gay", 
 		"shitposts", "cute toots", "pudgy girls", "lesbians", "slime girls",
@@ -223,12 +227,14 @@ def make_toot_nonstandard():
 		"seizing the means\nof production", "Karl Marx", "Pyotr Kropotkin",
 		"big dick energy", "smol dick energy", "surreal meams",
 		"lynnesbian\\'s amazing\nass", "oestrogen", "Seinfeld",
-		"girldick", "femdom", "robots", "uwu", "bootsy", "friendship", "tribadism",
+		"girldick", "femdom", "robots", "uwu", "zoe", "friendship", "tribadism",
 		"a lesbian commune", "beans", "vape ape", "regular horse", "big titty alf",
 		"the orb", "girls with thick thighs", "open source software", "smooches",
-		"two factor\nauthentication", "encryption", "fmt.Sprintf()", "love",
+		"two factor\nauthentication", "girls", "fmt.Sprintf()", "love",
 		"memes that don\\'t\nmake sense", "ogg vorbis", "chiptune", "dani",
-		"seasons 1-3 of\nspongebob", "big tiddy goth GF", "lesbismos"]
+		"seasons 1-3 of\nspongebob", "big tiddy goth GF", "lesbismos", "bune.city",
+		"irina", "lucy", "lopunny", "The LucyCule", "decentralisation", "python",
+		"petra's delicious curry", "big gay", "hens", "The LynneCule"]
 
 		badchoice = random.choice(bad)
 		goodchoice = random.choice(good)
